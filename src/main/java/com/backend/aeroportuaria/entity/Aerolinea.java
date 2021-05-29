@@ -16,7 +16,7 @@ public class Aerolinea {
 
     @Id
     @NotNull
-    private int idAerolinea;
+    private String idAerolinea;
 
     private String nombre;
 

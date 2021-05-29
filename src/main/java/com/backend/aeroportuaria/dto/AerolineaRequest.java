@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class AerolineaRequest {
 
     @NotBlank
-    private int idAerolinea;
+    private String idAerolinea;
 
     @NotBlank
     private String nombre;

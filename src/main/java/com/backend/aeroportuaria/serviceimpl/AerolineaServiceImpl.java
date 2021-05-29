@@ -21,7 +21,7 @@ public class AerolineaServiceImpl {
     }
 
 
-    public Optional<Aerolinea> getOne(int id){
+    public Optional<Aerolinea> getOne(String id){
         return aerolineaRepository.findById(id);
     }
 
@@ -33,11 +33,11 @@ public class AerolineaServiceImpl {
         aerolineaRepository.save(aerolinea);
     }
 
-    public void delete(int id){
+    public void delete(String id){
         aerolineaRepository.deleteById(id);
     }
 
-    public boolean existsById(int id){
+    public boolean existsById(String id){
         return aerolineaRepository.existsById(id);
     }
 
