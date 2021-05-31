@@ -14,7 +14,7 @@ public class ProductoDto {
     @Min(0) //El precio puede ser 0 pero no un valor negativo
     private Float precio; //El precio no es un primitivo sino un valor de la clase Float, por eso Float aparece en mayúscula, se requiere para poder poner el condicional de no nullo en los métodos create y update en el controller
 
-    @Min(0) //El precio puede ser 0 pero no un valor negativo
+    @Min(0)
     private Integer cantidad;
 
     public ProductoDto() {

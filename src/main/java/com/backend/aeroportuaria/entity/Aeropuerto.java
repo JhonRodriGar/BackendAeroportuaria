@@ -26,8 +26,13 @@ public class Aeropuerto {
     private String estado;
 
     private String pais;
-
+    /*
     private String id_ciudad;
+     */
+
+    @OneToOne(fetch = FetchType.LAZY) //Si se pone , cascade = CascadeType.ALL entonces cuando elimina un aeropuerto también elimina la cidad, se quita para que la ciudad no se borre y quede disponible para crear otro aeropuerto
+    @JoinColumn(name = "id_ciudad")
+    private Ciudad ciudad;
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER) //Si no se pone esto el sistema muestra error (fail en el método do filter failed to lazily initialize a collection of role). Un usuario puede tener varios roles y un rol puede pertenecer a varios usuarios, para implementar lo anterior se crea una tabla intermedia que va a contener dos campos, uno va a ser el id del usuario y el otro el  id del rol para relacionar cada rol con cada usuario.
@@ -35,11 +40,13 @@ public class Aeropuerto {
             inverseJoinColumns = @JoinColumn(name = "ID_AEROLINEA"))
     private Set<Aerolinea> aerolineas = new HashSet<>(); //Conjunto de aerolineas
 
-    public Aeropuerto(@NotNull String idAeropuerto, String nombre, String estado, String pais, String id_ciudad) {
+    //Se crea constructor lleno ya que este no debe llevar la colección de aerolíneas
+    public Aeropuerto(@NotNull String idAeropuerto, String nombre, String estado, String pais, Ciudad ciudad) {
         this.idAeropuerto = idAeropuerto;
         this.nombre = nombre;
         this.estado = estado;
         this.pais = pais;
-        this.id_ciudad = id_ciudad;
+        this.ciudad = ciudad;
     }
+
 }

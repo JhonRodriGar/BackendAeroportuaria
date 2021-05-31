@@ -44,5 +44,11 @@ public class AeropuertoServiceImpl implements AeropuertoService {
     public boolean existsByNombre(String nombre){
         return aeropuertoRepository.existsByNombre(nombre);
     }
+/*
+ Creado para tratar de encontrar el id de ciudad en la BD
 
+    public List<Aeropuerto> buscarCiudadesAeropuerto(String idCiudad){
+        return aeropuertoRepository.buscarCiudadesAeropuerto(idCiudad);
+    }
+*/
 }
