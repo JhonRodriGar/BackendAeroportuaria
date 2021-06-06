@@ -1,11 +1,9 @@
 package com.backend.aeroportuaria.controller;
 
 import com.backend.aeroportuaria.dto.EmpleadoRequest;
-import com.backend.aeroportuaria.dto.EmpleadoResponse;
 import com.backend.aeroportuaria.dto.ResponseCode;
 import com.backend.aeroportuaria.entity.Aeropuerto;
 import com.backend.aeroportuaria.entity.Empleado;
-import com.backend.aeroportuaria.entity.Producto;
 import com.backend.aeroportuaria.service.EmpleadoService;
 import com.backend.aeroportuaria.serviceimpl.AeropuertoServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -69,11 +67,11 @@ public class EmpleadoController {
     // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody EmpleadoRequest empleadoRequest){
-        if(StringUtils.isBlank(empleadoRequest.getNombres())) //Valida si el nombre está en blanco
-            return new ResponseEntity(new ResponseCode(3, "El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
-
+        Integer edad = empleadoRequest.getEdad();
+        if(StringUtils.isBlank(empleadoRequest.getIdEmpleado()) || StringUtils.isBlank(empleadoRequest.getNombres()) || StringUtils.isBlank(empleadoRequest.getApellidos()) || StringUtils.isBlank(empleadoRequest.getDireccion()) || StringUtils.isBlank(empleadoRequest.getTelefono()) || edad < 0 || edad == null || StringUtils.isBlank(empleadoRequest.getGenero()) || StringUtils.isBlank(empleadoRequest.getCargo()) || StringUtils.isBlank(empleadoRequest.getIdAeropuerto()))
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if (!aeropuertoService.existsById(empleadoRequest.getIdAeropuerto())){
-            return new ResponseEntity(new ResponseCode(3, "No se encontró el Aeropuerto ingresado"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseCode(19, "No se encontró el Aeropuerto ingresado"), HttpStatus.BAD_REQUEST);
         }
 
         Aeropuerto aeropuertoBd = aeropuertoService.getOne(empleadoRequest.getIdAeropuerto()).get();
@@ -86,10 +84,11 @@ public class EmpleadoController {
     //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id")String id, @RequestBody EmpleadoRequest empleadoRequest){
+        Integer edad = empleadoRequest.getEdad();
+        if(StringUtils.isBlank(empleadoRequest.getIdEmpleado()) || StringUtils.isBlank(empleadoRequest.getNombres()) || StringUtils.isBlank(empleadoRequest.getApellidos()) || StringUtils.isBlank(empleadoRequest.getDireccion()) || StringUtils.isBlank(empleadoRequest.getTelefono()) || edad < 0 || edad == null || StringUtils.isBlank(empleadoRequest.getGenero()) || StringUtils.isBlank(empleadoRequest.getCargo()) || StringUtils.isBlank(empleadoRequest.getIdAeropuerto()))
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(!empleadoService.existsById(id))
             return new ResponseEntity(new ResponseCode(2, "No se encontró información con los datos ingresados"), HttpStatus.NOT_FOUND);
-        if(empleadoService.existsByNombre(empleadoRequest.getNombres()) && empleadoService.getByNombre(empleadoRequest.getNombres()).get().getIdEmpleado() != id)
-            return new ResponseEntity(new ResponseCode(3, "El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
 
         Empleado empleado = empleadoService.getOne(id).get();
         empleado.setNombres(empleadoRequest.getNombres());
@@ -99,6 +98,10 @@ public class EmpleadoController {
         empleado.setEdad(empleadoRequest.getEdad());
         empleado.setGenero(empleadoRequest.getGenero());
         empleado.setCargo(empleadoRequest.getCargo());
+
+        Aeropuerto aeropuertoBd = aeropuertoService.getOne(empleadoRequest.getIdAeropuerto()).get();
+
+        empleado.setAeropuerto(aeropuertoBd);
 
         empleadoService.save(empleado);
         return new ResponseEntity(new ResponseCode(8, "Actualizado exitosamente"), HttpStatus.OK);

@@ -1,11 +1,7 @@
 package com.backend.aeroportuaria.serviceimpl;
 
-import com.backend.aeroportuaria.dto.EmpleadoRequest;
-import com.backend.aeroportuaria.dto.EmpleadoResponse;
 import com.backend.aeroportuaria.entity.Empleado;
-import com.backend.aeroportuaria.entity.Producto;
 import com.backend.aeroportuaria.repository.EmpleadoRepository;
-import com.backend.aeroportuaria.repository.ProductoRepository;
 import com.backend.aeroportuaria.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

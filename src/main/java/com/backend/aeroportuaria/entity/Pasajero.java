@@ -11,16 +11,20 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "EMPLEADO")
-public class Empleado {
+@Table(name = "PASAJERO")
+public class Pasajero {
 
     @Id
     @NotNull
-    private String idEmpleado;
+    private String idPasajero;
+
+    private String numeroPasaporte;
 
     private String nombres;
 
     private String apellidos;
+
+    private String genero;
 
     private String direccion;
 
@@ -28,13 +32,10 @@ public class Empleado {
 
     private int edad;
 
-    private String genero;
-
-    private String cargo;
-
-    //Crea relación con la tabla Aeropuerto, muchos Empleados pueden pertenecer a un Aeropuerto
+    //Crea relación con la tabla Vuelo, muchos Pasajeros pueden viajar en un Vuelo
     //Referencia tomada de https://www.oscarblancarteblog.com/2018/12/20/relaciones-onetomany/
     @ManyToOne
-    @JoinColumn(name = "ID_AEROPUERTO", nullable = false) //Si se pone updatable = false entonces no se podra actualizar el ID_AEROPUERTO en la entidad Empleados, la quito simulando que un Empleado puede pasar de trabajar de un Aeropuerto a otro.
-    private Aeropuerto aeropuerto;
+    @JoinColumn(name = "ID_VUELO", nullable = false) //Si se pone updatable = false entonces no se podra actualizar el ID_AEROPUERTO en la entidad Empleados, la quito simulando que un Empleado puede pasar de trabajar de un Aeropuerto a otro.
+    private Vuelo vuelo;
+
 }

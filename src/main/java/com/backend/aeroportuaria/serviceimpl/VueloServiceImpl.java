@@ -39,4 +39,14 @@ public class VueloServiceImpl implements VueloService {
         return vueloRepository.existsById(id);
     }
 
+    public boolean existsByFuente(String fuente){ return vueloRepository.existsByFuente(fuente);}
+
+    public boolean existsByDestino(String destino){ return vueloRepository.existsByDestino(destino);}
+
+    public boolean existsByClase(String clase){return vueloRepository.existsByClase(clase);}
+
+    public List<String> validarDisponibilidad(String idAerolinea, String fuente, String destino, String clase){
+        return vueloRepository.validarDisponibilidad(idAerolinea, fuente, destino, clase);
+    }
+
 }

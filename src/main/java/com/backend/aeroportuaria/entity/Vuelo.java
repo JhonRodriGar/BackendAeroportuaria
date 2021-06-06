@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,9 +23,9 @@ public class Vuelo {
 
     private String destino;
 
-    private String llegada;
+    private Date llegada;
 
-    private String salida;
+    private Date salida;
 
     private String estado;
 
@@ -40,7 +42,7 @@ public class Vuelo {
     //Crea relación con la tabla Aerolínea, muchos Vuelos pueden pertenecer a una Aerolínea
     //Referencia tomada de https://www.oscarblancarteblog.com/2018/12/20/relaciones-onetomany/
     @ManyToOne
-    @JoinColumn(name = "ID_AEROLINEA", nullable = false, updatable = false)
+    @JoinColumn(name = "ID_AEROLINEA", nullable = false) //Quita updatable = false para que pueda actualizar Aerolínea
     private Aerolinea aerolinea;
 
 }

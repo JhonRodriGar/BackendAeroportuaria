@@ -1,12 +1,10 @@
 package com.backend.aeroportuaria.controller;
 
-import com.backend.aeroportuaria.dto.ProductoDto;
 import com.backend.aeroportuaria.dto.ResponseCode;
 import com.backend.aeroportuaria.dto.VueloRequest;
 import com.backend.aeroportuaria.entity.Aerolinea;
 import com.backend.aeroportuaria.entity.Producto;
 import com.backend.aeroportuaria.entity.Vuelo;
-import com.backend.aeroportuaria.service.ProductoService;
 import com.backend.aeroportuaria.service.VueloService;
 import com.backend.aeroportuaria.serviceimpl.AerolineaServiceImpl;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,12 +45,51 @@ public class VueloController {
     // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody VueloRequest vueloRequest){
+        Integer numeroParadas = vueloRequest.getNumeroParadas(); //Pasa número de paradas a entero para poder validar que no sea negativo
+        if(StringUtils.isBlank(vueloRequest.getIdVuelo()) || StringUtils.isBlank(vueloRequest.getFuente()) || StringUtils.isBlank(vueloRequest.getDestino()) || StringUtils.isBlank(vueloRequest.getEstado()) || StringUtils.isBlank(vueloRequest.getDuracion()) || StringUtils.isBlank(vueloRequest.getTipoVuelo()) || StringUtils.isBlank(vueloRequest.getIdVuelo()) || numeroParadas == null || numeroParadas < 0 || StringUtils.isBlank(vueloRequest.getClase()) || StringUtils.isBlank(vueloRequest.getIdAerolinea()))
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(!aerolineaService.existsById(vueloRequest.getIdAerolinea()))
             return new ResponseEntity(new ResponseCode(18, "No existe la Aerolínea ingresada"), HttpStatus.NOT_FOUND);
+        if(!vueloRequest.getClase().equals("Negocios") && !vueloRequest.getClase().equals("Primera Clase") && !vueloRequest.getClase().equals("Economía"))
+            return new ResponseEntity(new ResponseCode(22, "La clase de Vuelo sólo se permite Negocios, Primera Clase o Economía"), HttpStatus.NOT_FOUND);
+        if(!vueloRequest.getTipoVuelo().equals("Sin escalas") && !vueloRequest.getTipoVuelo().equals("De conexión"))
+            return new ResponseEntity(new ResponseCode(23, "El tipo de Vuelo sólo se permite Sin escalas o De conexión"), HttpStatus.NOT_FOUND);
 
         Aerolinea aerolineaBd = aerolineaService.getOne(vueloRequest.getIdAerolinea()).get();
 
-        Vuelo vuelo = new Vuelo(vueloRequest.getIdVuelo(), vueloRequest.getFuente(), vueloRequest.getDestino(), vueloRequest.getLlegada(), vueloRequest.getSalida(), vueloRequest.getEstado(), vueloRequest.getDuracion(), vueloRequest.getTipoVuelo(), vueloRequest.getNumeroParadas(), vueloRequest.getClase(), aerolineaBd);
+        String idAerolinea = aerolineaBd.getIdAerolinea();
+
+        if(vueloService.existsById(idAerolinea + vueloRequest.getIdVuelo()))
+            return new ResponseEntity(new ResponseCode(23, "Ese id de Vuelo ya existe"), HttpStatus.NOT_FOUND);
+
+/*
+Referencia para tratar fecha
+https://www.youtube.com/watch?v=M1S3LbCxD-M
+
+La fech que se envía desde postan llega al al editor un día antes, se debe concatenar el 1 para que quede bien
+ */
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date fechaSalida = new Date(vueloRequest.getSalida().getYear(), vueloRequest.getSalida().getMonth(), vueloRequest.getSalida().getDate() + 1);
+        System.out.println("La fecha salida convertida es: " + sdf.format(fechaSalida));
+
+        Date fechaLlegada = new Date(vueloRequest.getLlegada().getYear(), vueloRequest.getLlegada().getMonth(), vueloRequest.getLlegada().getDate() + 1);
+        System.out.println("La fecha llegada convertida es: " + sdf.format(fechaLlegada));
+
+        if (fechaLlegada.getTime() < fechaSalida.getTime()){
+            return new ResponseEntity(new ResponseCode(29, "La fecha de llegada no puede ser inferior a la fecha de salida"), HttpStatus.NOT_FOUND); }
+
+        Vuelo vuelo = new Vuelo(idAerolinea + vueloRequest.getIdVuelo(),
+                vueloRequest.getFuente(),
+                vueloRequest.getDestino(),
+                fechaLlegada,
+                fechaSalida,
+                vueloRequest.getEstado(),
+                vueloRequest.getDuracion(),
+                vueloRequest.getTipoVuelo(),
+                vueloRequest.getNumeroParadas(),
+                vueloRequest.getClase(),
+                aerolineaBd);
+
         vueloService.save(vuelo);
         return new ResponseEntity(new ResponseCode(6, "Creado exitosamente"), HttpStatus.OK);
 
@@ -60,33 +98,42 @@ public class VueloController {
     //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody VueloRequest vueloRequest){
+        Integer numeroParadas = vueloRequest.getNumeroParadas(); //Pasa número de paradas a entero para poder validar que no sea negativo
+        if(StringUtils.isBlank(vueloRequest.getIdVuelo()) || StringUtils.isBlank(vueloRequest.getFuente()) || StringUtils.isBlank(vueloRequest.getDestino()) || StringUtils.isBlank(vueloRequest.getEstado()) || StringUtils.isBlank(vueloRequest.getDuracion()) || StringUtils.isBlank(vueloRequest.getTipoVuelo()) || StringUtils.isBlank(vueloRequest.getIdVuelo()) || numeroParadas == null || numeroParadas < 0 || StringUtils.isBlank(vueloRequest.getClase()) || StringUtils.isBlank(vueloRequest.getIdAerolinea()))
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(!vueloService.existsById(vueloRequest.getIdVuelo()))
             return new ResponseEntity(new ResponseCode(2, "No se encontró información con los datos ingresados"), HttpStatus.NOT_FOUND);
-/*
-PENDIENTE CORREGIR
-Cuando se realiza la búsqueda de vuelo en la base de datos hay un error, aparentemente se está creando un bucle
-la petición retrorna que se actualizó pero en realidad en la BD sigue igual
-Al tratar de imprimir por consola el vuelo sale error al parecer por agotar el espacio de memora debido al bucle
-El bucle se genera porque la clase Vuelo tiene un atributo de la clase Aerolinea y a su vez esta última,
-tiene una lista de buelos
- */
+        if(!aerolineaService.existsById(vueloRequest.getIdAerolinea()))
+            return new ResponseEntity(new ResponseCode(18, "No existe la Aerolínea ingresada"), HttpStatus.NOT_FOUND);
+        if(!vueloRequest.getClase().equals("Negocios") && !vueloRequest.getClase().equals("Primera Clase") && !vueloRequest.getClase().equals("Economía"))
+            return new ResponseEntity(new ResponseCode(22, "La clase de Vuelo sólo se permite Negocios, Primera Clase o Economía"), HttpStatus.NOT_FOUND);
+        if(!vueloRequest.getTipoVuelo().equals("Sin escalas") && !vueloRequest.getTipoVuelo().equals("De conexión"))
+            return new ResponseEntity(new ResponseCode(23, "El tipo de Vuelo sólo se permite Sin escalas o De conexión"), HttpStatus.NOT_FOUND);
+
         Vuelo vuelo = vueloService.getOne(vueloRequest.getIdVuelo()).get();
-
-        System.out.println("El vuelo encontrado en BD es: " + vuelo);
-
-        vuelo.setIdVuelo(vuelo.getIdVuelo());
-        vuelo.setFuente(vuelo.getFuente());
-        vuelo.setDestino(vuelo.getDestino());
-        vuelo.setLlegada(vuelo.getLlegada());
-        vuelo.setSalida(vuelo.getSalida());
-        vuelo.setEstado(vuelo.getEstado());
-        vuelo.setDuracion(vuelo.getDuracion());
-        vuelo.setTipoVuelo(vuelo.getTipoVuelo());
-        vuelo.setNumeroParadas(vuelo.getNumeroParadas());
-        vuelo.setClase(vuelo.getClase());
 
         Aerolinea aerolineaBd = aerolineaService.getOne(vueloRequest.getIdAerolinea()).get();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date fechaSalida = new Date(vueloRequest.getSalida().getYear(), vueloRequest.getSalida().getMonth(), vueloRequest.getSalida().getDate() + 1);
+        System.out.println("La fecha salida convertida es: " + sdf.format(fechaSalida));
+
+        Date fechaLlegada = new Date(vueloRequest.getLlegada().getYear(), vueloRequest.getLlegada().getMonth(), vueloRequest.getLlegada().getDate() + 1);
+        System.out.println("La fecha llegada convertida es: " + sdf.format(fechaLlegada));
+
+        if (fechaLlegada.getTime() < fechaSalida.getTime()){
+            return new ResponseEntity(new ResponseCode(29, "La fecha de llegada no puede ser inferior a la fecha de salida"), HttpStatus.NOT_FOUND); }
+
+        vuelo.setIdVuelo(vueloRequest.getIdVuelo());
+        vuelo.setFuente(vueloRequest.getFuente());
+        vuelo.setDestino(vueloRequest.getDestino());
+        vuelo.setLlegada(fechaLlegada);
+        vuelo.setSalida(fechaSalida);
+        vuelo.setEstado(vueloRequest.getEstado());
+        vuelo.setDuracion(vueloRequest.getDuracion());
+        vuelo.setTipoVuelo(vueloRequest.getTipoVuelo());
+        vuelo.setNumeroParadas(vueloRequest.getNumeroParadas());
+        vuelo.setClase(vueloRequest.getClase());
         vuelo.setAerolinea(aerolineaBd);
 
         vueloService.save(vuelo);
@@ -96,6 +143,14 @@ tiene una lista de buelos
     //@PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
+
+/*
+PENDIENTE CORREGIR
+Si se va a eliminar un Vuelo que ya tien asociado pasajeros, el sistema muestra error
+intenté solucionarlo utilizando la propiedad (cascade = CascadeType.ALL) en el @ManyToOne
+de la clase Pasajero pero no funcionó.
+ */
+
         if(!vueloService.existsById(id))
             return new ResponseEntity(new ResponseCode(2, "No se encontró información con los datos ingresados"), HttpStatus.NOT_FOUND);
         vueloService.delete(id);

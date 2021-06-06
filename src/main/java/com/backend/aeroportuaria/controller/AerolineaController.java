@@ -45,12 +45,11 @@ public class AerolineaController {
     // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody AerolineaRequest aerolineaRequest){
-        if(StringUtils.isBlank(aerolineaRequest.getNombre())) //Valida si el nombre está en blanco
-            return new ResponseEntity(new ResponseCode(3, "El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(aerolineaRequest.getIdAerolinea()) || StringUtils.isBlank(aerolineaRequest.getNombre()) || StringUtils.isBlank(aerolineaRequest.getCodigoTresDigitos())) //Valida si los campos están vacíos
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(aerolineaService.existsByNombre(aerolineaRequest.getNombre()))
             return new ResponseEntity(new ResponseCode(5, "Ese nombre ya existe"), HttpStatus.BAD_REQUEST);
-        if(StringUtils.isBlank(aerolineaRequest.getCodigoTresDigitos())) //Valida si el nombre está en blanco
-            return new ResponseEntity(new ResponseCode(4, "El código de Aerolínea es obligatorio"), HttpStatus.BAD_REQUEST);
+
         Aerolinea aerolinea = new Aerolinea(aerolineaRequest.getIdAerolinea(), aerolineaRequest.getNombre(), aerolineaRequest.getCodigoTresDigitos());
         aerolineaService.save(aerolinea);
         return new ResponseEntity(new ResponseCode(6, "Creado exitosamente"), HttpStatus.OK);
@@ -59,8 +58,8 @@ public class AerolineaController {
     //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody AerolineaRequest aerolineaRequest){
-        if(StringUtils.isBlank(aerolineaRequest.getIdAerolinea()) || StringUtils.isBlank(aerolineaRequest.getNombre()) || StringUtils.isBlank(aerolineaRequest.getCodigoTresDigitos()))
-            return new ResponseEntity(new ResponseCode(16, "Datos incompletos"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(aerolineaRequest.getIdAerolinea()) || StringUtils.isBlank(aerolineaRequest.getNombre()) || StringUtils.isBlank(aerolineaRequest.getCodigoTresDigitos())) //Valida si los campos están vacíos
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(!aerolineaService.existsById(aerolineaRequest.getIdAerolinea()))
             return new ResponseEntity(new ResponseCode(2, "No se encontró información con los datos ingresados"), HttpStatus.NOT_FOUND);
 

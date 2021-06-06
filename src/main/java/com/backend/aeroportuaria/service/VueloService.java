@@ -18,4 +18,12 @@ public interface VueloService {
 
     public boolean existsById(String id);
 
+    public boolean existsByFuente(String fuente);
+
+    public boolean existsByDestino(String destino);
+
+    public boolean existsByClase(String clase);
+
+    public List<String> validarDisponibilidad(String idAerolinea, String fuente, String destino, String clase);
+
 }

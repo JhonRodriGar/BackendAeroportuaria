@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +17,9 @@ public class VueloRequest {
 
     private String destino;
 
-    private String llegada;
+    private Date llegada;
 
-    private String salida;
+    private Date salida;
 
     private String estado;
 

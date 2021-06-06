@@ -65,8 +65,8 @@ public class CiudadController {
     // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody CiudadRequest ciudadRequest){
-        if(StringUtils.isBlank(ciudadRequest.getNombre())) //Valida si el nombre está en blanco
-            return new ResponseEntity(new ResponseCode(3, "El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(ciudadRequest.getId_ciudad()) || StringUtils.isBlank(ciudadRequest.getNombre()) || StringUtils.isBlank(ciudadRequest.getEstado()))
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(ciudadService.existsByNombre(ciudadRequest.getNombre()))
             return new ResponseEntity(new ResponseCode(5, "Ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         Ciudad ciudad = new Ciudad(ciudadRequest.getId_ciudad(), ciudadRequest.getNombre(), ciudadRequest.getEstado(),ciudadRequest.getPais());
@@ -77,12 +77,12 @@ public class CiudadController {
     //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody CiudadRequest ciudadRequest){
+        if(StringUtils.isBlank(ciudadRequest.getId_ciudad()) || StringUtils.isBlank(ciudadRequest.getNombre()) || StringUtils.isBlank(ciudadRequest.getEstado()))
+            return new ResponseEntity(new ResponseCode(16, "Datos incompletos o negativos"), HttpStatus.BAD_REQUEST);
         if(!ciudadService.existsById(ciudadRequest.getId_ciudad()))
             return new ResponseEntity(new ResponseCode(2, "La ciudad no existe"), HttpStatus.NOT_FOUND);
         if(ciudadService.existsByNombre(ciudadRequest.getNombre()) && ciudadService.getByNombre(ciudadRequest.getNombre()).get().getId_ciudad() != ciudadRequest.getId_ciudad())
             return new ResponseEntity(new ResponseCode(7, "El nombre ingresado ya existe"), HttpStatus.BAD_REQUEST);
-        if(StringUtils.isBlank(ciudadRequest.getNombre()))
-            return new ResponseEntity(new ResponseCode(3, "El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
 
         Ciudad ciudad = ciudadService.getOne(ciudadRequest.getId_ciudad()).get();
         ciudad.setId_ciudad(ciudadRequest.getId_ciudad());

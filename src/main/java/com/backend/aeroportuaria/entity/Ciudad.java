@@ -1,5 +1,6 @@
 package com.backend.aeroportuaria.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,9 +23,9 @@ public class Ciudad {
 
     private String pais;
 /*
-
+PENDIENTE CORREGIR
 Si dejo lo siguiente habilitado entonces en la petición de listar ciudades se crea un bucle
-Como se comentó esto entonces ahora se puede crear dos o más Aeropuertos en la misma ciudad PENDIENTE CORREGIR
+Como se comentó esto entonces ahora se puede crear dos o más Aeropuertos en la misma ciudad
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ciudad")
     private Aeropuerto aeropuerto;
