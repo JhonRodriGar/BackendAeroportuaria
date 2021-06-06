@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -54,7 +55,7 @@ public class AeropuertoController {
         return new ResponseEntity(aeropuerto, HttpStatus.OK);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
+    @PreAuthorize("hasRole('ADMIN')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody AeropuertoRequest aeropuertoRequest){
         if(StringUtils.isBlank(aeropuertoRequest.getIdAeropuerto()) || StringUtils.isBlank(aeropuertoRequest.getNombre()) || StringUtils.isBlank(aeropuertoRequest.getEstado()) || StringUtils.isBlank(aeropuertoRequest.getPais()) || StringUtils.isBlank(aeropuertoRequest.getId_ciudad())) //Valida si los campos están vacíos
@@ -101,7 +102,7 @@ Como se comentó el @OnetoOne en la clase ciudad, ahora se puede crear dos o má
 
     }
 
-    //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
+    @PreAuthorize("hasRole('ADMIN')OR hasRole('EMPLEADO')")
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody AeropuertoRequest aeropuertoRequest){
         if(StringUtils.isBlank(aeropuertoRequest.getIdAeropuerto()) || StringUtils.isBlank(aeropuertoRequest.getNombre()) || StringUtils.isBlank(aeropuertoRequest.getEstado()) || StringUtils.isBlank(aeropuertoRequest.getPais()) || StringUtils.isBlank(aeropuertoRequest.getId_ciudad())) //Valida si los campos están vacíos
@@ -133,7 +134,7 @@ Como se comentó el @OnetoOne en la clase ciudad, ahora se puede crear dos o má
         return new ResponseEntity(new ResponseCode(8, "Actualizado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id){
         if(!aeropuertoService.existsById(id))

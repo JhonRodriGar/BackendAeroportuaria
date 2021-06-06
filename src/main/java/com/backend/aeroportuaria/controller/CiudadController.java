@@ -1,18 +1,16 @@
 package com.backend.aeroportuaria.controller;
 
 import com.backend.aeroportuaria.dto.CiudadRequest;
-import com.backend.aeroportuaria.dto.ProductoDto;
 import com.backend.aeroportuaria.dto.ResponseCode;
 import com.backend.aeroportuaria.entity.Ciudad;
-import com.backend.aeroportuaria.entity.Producto;
 import com.backend.aeroportuaria.service.CiudadService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,7 +45,7 @@ public class CiudadController {
     }
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<Producto> getById(@PathVariable("id") String id){
+    public ResponseEntity<Ciudad> getById(@PathVariable("id") String id){
         if(!ciudadService.existsById(id))
             return new ResponseEntity(new ResponseCode(2, "No se encontró información con los datos ingresados"), HttpStatus.NOT_FOUND);
         Ciudad ciudad = ciudadService.getOne(id).get();
@@ -55,14 +53,14 @@ public class CiudadController {
     }
 
     @GetMapping("/detailname/{nombre}")
-    public ResponseEntity<Producto> getByNombre(@PathVariable("nombre") String nombre){
+    public ResponseEntity<Ciudad> getByNombre(@PathVariable("nombre") String nombre){
         if(!ciudadService.existsByNombre(nombre))
             return new ResponseEntity(new ResponseCode(2, "No se encontró información con los datos ingresados"), HttpStatus.NOT_FOUND);
         Ciudad ciudad = ciudadService.getByNombre(nombre).get();
         return new ResponseEntity(ciudad, HttpStatus.OK);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
+    @PreAuthorize("hasRole('ADMIN')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody CiudadRequest ciudadRequest){
         if(StringUtils.isBlank(ciudadRequest.getId_ciudad()) || StringUtils.isBlank(ciudadRequest.getNombre()) || StringUtils.isBlank(ciudadRequest.getEstado()))
@@ -74,7 +72,7 @@ public class CiudadController {
         return new ResponseEntity(new ResponseCode(6, "Creado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
+    @PreAuthorize("hasRole('ADMIN')OR hasRole('EMPLEADO')")
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody CiudadRequest ciudadRequest){
         if(StringUtils.isBlank(ciudadRequest.getId_ciudad()) || StringUtils.isBlank(ciudadRequest.getNombre()) || StringUtils.isBlank(ciudadRequest.getEstado()))
@@ -94,7 +92,7 @@ public class CiudadController {
         return new ResponseEntity(new ResponseCode(8, "Actualizado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id")String id){
         if(!ciudadService.existsById(id))

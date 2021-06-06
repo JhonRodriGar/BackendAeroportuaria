@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.crypto.Data;
@@ -42,7 +43,7 @@ public class BoletoController {
         return new ResponseEntity(boleto, HttpStatus.OK);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
+    @PreAuthorize("hasRole('ADMIN')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody BoletoRequest boletoRequest){
         if(StringUtils.isBlank(boletoRequest.getIdBoleto()) || StringUtils.isBlank(boletoRequest.getNumeroAsiento()) || boletoRequest.getTarifa() < 0  || StringUtils.isBlank(boletoRequest.getIdPasajero()))
@@ -89,7 +90,7 @@ La fech que se envía desde postan llega al al editor un día antes, se debe con
         return new ResponseEntity(new ResponseCode(6, "Creado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
+    @PreAuthorize("hasRole('ADMIN')OR hasRole('EMPLEADO')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id")String id, @RequestBody BoletoRequest boletoRequest){
         if(!boletoService.existsById(id))
@@ -121,7 +122,7 @@ La fech que se envía desde postan llega al al editor un día antes, se debe con
         return new ResponseEntity(new ResponseCode(8, "Actualizado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id")String id){
         if(!boletoService.existsById(id))

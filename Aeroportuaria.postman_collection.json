@@ -6,10 +6,132 @@
 	},
 	"item": [
 		{
-			"name": "Aerolínea Crear",
+			"name": "Crear usuario Admin",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"admin\",\r\n    \"nombreUsuario\" : \"admin\",\r\n    \"email\" : \"admin@email.com\",\r\n    \"password\" : \"admin\",\r\n    \"roles\" : [\"admin\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/auth/nuevo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"auth",
+						"nuevo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear usuario Empleado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"Jericundio Romeo\",\r\n    \"nombreUsuario\" : \"empleado2\",\r\n    \"email\" : \"jeri@email.com\",\r\n    \"password\" : \"empleado2\",\r\n    \"roles\" : [\"empleado\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/auth/nuevo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"auth",
+						"nuevo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear usuario Pasajero",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"Pedro Coral\",\r\n    \"nombreUsuario\" : \"pasajero2\",\r\n    \"email\" : \"pedro@mail.com\",\r\n    \"password\" : \"pasajero2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/auth/nuevo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"auth",
+						"nuevo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Iniciar sesión",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombreUsuario\" : \"pasajero2\",\r\n    \"password\" : \"pasajero2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Aerolínea Crear",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE2MjI5NDUxNTksImV4cCI6MTYyMjk4MTE1OX0.tQdMbIaOY_3p9GqnV83Xn71PTX3mvbpwsCmXxWnZrLo1E08WKln-00YlpFeImwoiJKVRngQPx2rEJxBi0l599g",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"idAerolinea\" : \"EE\",\r\n    \"nombre\" : \"EAmerican EAirlines\",\r\n    \"codigoTresDigitos\" : \"005\"\r\n}",
@@ -38,7 +160,13 @@
 			"name": "Aerolíneas Listar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYyMjk0NDU5NSwiZXhwIjoxNjIyOTgwNTk1fQ.-P6kMX-QR0R5EG9HbURI_7mHQdr-eXeJkLjAjNMNy-DGPoIf0ck_N96w_4y2a-3poULrI5Gwk0qrHqU4lpRG5A",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/aerolinea/lista",
 					"protocol": "http",
@@ -150,10 +278,16 @@
 			"name": "Ciudad Crear",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYyMjk0NTM2MCwiZXhwIjoxNjIyOTgxMzYwfQ.uE7HKAtsIk4a2vIuh6fgREwgU0RXSoXAswmvCW7xEpbRzhC0TV_qBkwRwvJNcwk9n-Hy4c5ZuIFcpwaPfxtOig",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id_ciudad\" : \"CDAD7\",\r\n    \"nombre\" : \"Montenegro\",\r\n    \"estado\" : \"Disponible\",\r\n    \"pais\" : \"Colombia\"\r\n}",
+					"raw": "{\r\n    \"id_ciudad\" : \"CDAD8\",\r\n    \"nombre\" : \"Santiago\",\r\n    \"estado\" : \"Disponible\",\r\n    \"pais\" : \"Colombia\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -179,7 +313,13 @@
 			"name": "Ciudades Listar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE2MjI5NDYyMDQsImV4cCI6MTYyMjk4MjIwNH0.k8ZD2hpM8uM91jo3tthOep5o1WPMCNR2Z_zyDORV2RxQt06n2K5ryqswfzzEvGKUDOYnA47TUNC6HX0Ee8dO7Q",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/ciudad/lista",
 					"protocol": "http",
@@ -199,7 +339,13 @@
 			"name": "Ciudad Detalles  por id",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE2MjI5NDYyMDQsImV4cCI6MTYyMjk4MjIwNH0.k8ZD2hpM8uM91jo3tthOep5o1WPMCNR2Z_zyDORV2RxQt06n2K5ryqswfzzEvGKUDOYnA47TUNC6HX0Ee8dO7Q",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/ciudad/detail/CDAD6",
 					"protocol": "http",
@@ -220,7 +366,13 @@
 			"name": "Ciudad Detalles por nombre",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE2MjI5NDYyMDQsImV4cCI6MTYyMjk4MjIwNH0.k8ZD2hpM8uM91jo3tthOep5o1WPMCNR2Z_zyDORV2RxQt06n2K5ryqswfzzEvGKUDOYnA47TUNC6HX0Ee8dO7Q",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/ciudad/detailname/Cali",
 					"protocol": "http",
@@ -241,7 +393,13 @@
 			"name": "Ciudad Actualizar",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"id_ciudad\" : \"CDAD6\",\r\n    \"nombre\" : \"Pijao Actualizado\",\r\n    \"estado\" : \"Disponible Actualizado\",\r\n    \"pais\" : \"Colombia Actualizado\"\r\n}",
@@ -320,7 +478,13 @@
 			"name": "Aeropuertos Listar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/aeropuerto/lista",
 					"protocol": "http",
@@ -340,7 +504,13 @@
 			"name": "Aeropuerto Detalles  por id",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/aeropuerto/detail/AAA",
 					"protocol": "http",
@@ -361,7 +531,13 @@
 			"name": "Aeropuerto Detalles por nombre",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/aeropuerto/detailname/El dorado AAA",
 					"protocol": "http",
@@ -382,7 +558,13 @@
 			"name": "Aeropuerto Actualizar",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"idAeropuerto\" : \"BBB\",\r\n    \"nombre\" : \"El dorado BBB Actualizado\",\r\n    \"estado\" : \"Disponible Actualizado\",\r\n    \"pais\" : \"Colombia Actualizado\",\r\n    \"id_ciudad\" : \"CDAD7\",\r\n    \"aerolineas\" : [\"AA\", \"BB\"]\r\n}",
@@ -411,7 +593,13 @@
 			"name": "Aeropuerto Eliminar",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/aeropuerto/delete/BBB",
 					"protocol": "http",
@@ -423,6 +611,13 @@
 						"aeropuerto",
 						"delete",
 						"BBB"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -461,7 +656,13 @@
 			"name": "Empleados Listar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/empleado/lista",
 					"protocol": "http",
@@ -481,7 +682,13 @@
 			"name": "Empleado Detalles por id",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/empleado/detail/EMP01",
 					"protocol": "http",
@@ -493,6 +700,13 @@
 						"empleado",
 						"detail",
 						"EMP01"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -502,7 +716,13 @@
 			"name": "Empleado Detalles por nombre",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/empleado/detailname/Raúl Carlos",
 					"protocol": "http",
@@ -603,7 +823,13 @@
 			"name": "Vuelos Listar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/vuelo/lista",
 					"protocol": "http",
@@ -623,7 +849,13 @@
 			"name": "Vuelo Detalles por id",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/vuelo/detail/VUELO1",
 					"protocol": "http",
@@ -723,7 +955,13 @@
 			"name": "Pasajeros Lista",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/pasajero/lista",
 					"protocol": "http",
@@ -865,7 +1103,13 @@
 			"name": "Boletos Lista",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/boleto/lista",
 					"protocol": "http",
@@ -876,6 +1120,13 @@
 					"path": [
 						"boleto",
 						"lista"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -986,7 +1237,13 @@
 			"name": "Tarifas Lista",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/tarifa/lista",
 					"protocol": "http",
@@ -1057,7 +1314,13 @@
 			"name": "Tarifa Eliminar",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8081/tarifa/delete/1",
 					"protocol": "http",
@@ -1078,7 +1341,13 @@
 			"name": "Listar Opciones de vuelo",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNhamVybzIiLCJpYXQiOjE2MjI5NDYzNDQsImV4cCI6MTYyMjk4MjM0NH0.DNSmPKruLzQ5mgSa6hcxpeq8KrIBCQmetewpO1x-6trWWDlzQfOE2G1gTualdWi6PKAHRUrg_HmACLJt3vhZxw",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"idAerolinea\" : \"CC\",\r\n    \"fuente\" : \"Bogotá\",\r\n    \"destino\" : \"Armenia\",\r\n    \"fechaViaje\" : \"2021-05-01\",\r\n    \"clase\" : \"Primera Clase\"\r\n}",

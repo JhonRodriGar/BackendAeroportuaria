@@ -1,9 +1,6 @@
 package com.backend.aeroportuaria.service;
 
-import com.backend.aeroportuaria.dto.EmpleadoRequest;
-import com.backend.aeroportuaria.dto.EmpleadoResponse;
 import com.backend.aeroportuaria.entity.Empleado;
-import com.backend.aeroportuaria.entity.Producto;
 
 import java.util.List;
 import java.util.Optional;

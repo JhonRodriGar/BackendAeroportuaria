@@ -48,20 +48,20 @@
             <version>2.4.1</version>
 		</dependency>
 		
-		<!-- Dependencia de seguridad
+		<!-- Dependencia de seguridad -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		-->
+
 		
-		<!-- Dependencia para generar los JWT
+		<!-- Dependencia para generar los JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
-		-->
+
 
 		<!-- Permite conexión con base de datos de oracle -->
 		<dependency>

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class PasajeroController {
         return new ResponseEntity(pasajero, HttpStatus.OK);
     }
 
-    // @PreAuthorize("hasRole('ADMIN')OR hasRole('PROVEEDOR')") //Roles autorizados para acceder a la petición de este método
+    @PreAuthorize("hasRole('ADMIN')") //Roles autorizados para acceder a la petición de este método
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody PasajeroRequest pasajeroRequest){
         Integer edad = pasajeroRequest.getEdad();
@@ -65,7 +66,7 @@ public class PasajeroController {
         return new ResponseEntity(new ResponseCode(6, "Creado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN') OR hasRole('VENDEDOR')")
+    @PreAuthorize("hasRole('ADMIN')OR hasRole('EMPLEADO')")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id")String id, @RequestBody PasajeroRequest pasajeroRequest){
         Integer edad = pasajeroRequest.getEdad();
@@ -91,7 +92,7 @@ public class PasajeroController {
         return new ResponseEntity(new ResponseCode(8, "Actualizado exitosamente"), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id")String id){
         if(!pasajeroService.existsById(id))
